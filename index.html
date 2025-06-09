@@ -1,0 +1,30 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Testar Pagamento Pix</title>
+</head>
+<body>
+  <h1>Gerar Pagamento Pix</h1>
+
+
+  <form action="">
+    <input type="email" name="" id="email">
+  </form>
+  <button id="gerarPixBtn">Gerar PIX</button>
+
+  <pre id="resposta"></pre>
+
+  <script>
+    document.getElementById('gerarPixBtn').addEventListener('click', async () => {
+      const resposta = await fetch('http://localhost:3000/gerar-pix', {
+        method: 'POST',
+      });
+
+      const data = await resposta.json();
+      document.getElementById('resposta').textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
