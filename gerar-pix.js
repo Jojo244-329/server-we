@@ -156,7 +156,7 @@ app.post('/api/gerar-cartao', async (req, res) => {
   }
 });
 
-router.get('/api/verificar-transacao', async (req, res) => {
+app.get('/api/verificar-transacao', async (req, res) => {
   const transactionId = req.query.transactionId;
 
   try {
