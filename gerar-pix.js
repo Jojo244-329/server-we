@@ -155,24 +155,20 @@ app.post('/api/gerar-cartao', async (req, res) => {
     console.log('=======================================================');
   }
 });
-app.post('/api/webhook/pix', (req, res) => {
-  const { transactionId, status } = req.body;
 
-  console.log('📥 Webhook recebido do PIX:', req.body);
+router.get('/api/verificar-transacao', async (req, res) => {
+  const transactionId = req.query.transactionId;
 
-  if (status === 'paid') {
-    // Aqui você pode salvar no banco se quiser
-    // E também pode emitir um evento via WebSocket ou salvar um status temporário
+  try {
+    const resposta = await axios.get(`https://app.onetimepay.com.br/api/v1/transactions/${transactionId}`, { headers: HEADERS }
+      
+    );
+
+    res.status(200).json(resposta.data);
+  } catch (erro) {
+    console.error("❌ Erro ao consultar transação:", erro.response?.data || erro.message);
+    res.status(erro.response?.status || 500).json({ erro: "Erro ao verificar transação." });
   }
-
-  res.status(200).send('OK');
-});
-
-
-app.get('/api/check-status', async (req, res) => {
-  const { transactionId } = req.query;
-  const resp = await axios.get(`${BASE_URL}/transaction/${transactionId}`, { headers: HEADERS });
-  res.json({ status: resp.data.status });
 });
 
 // ⚠️ Remova o app.listen para funcionar na Vercel
